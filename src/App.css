@@ -1,0 +1,87 @@
+.folder {
+  margin-top: 6px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px;
+  width: 330px;
+  cursor: pointer;
+}
+
+.inputContainer{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.inputContainer>span{
+  margin-top: 5px;
+}
+
+.inputContainer__input {
+  margin: 6px 0 0px 0;
+  padding: 5px;
+  display: flex;
+  border: 1px solid lightgray;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.folder > span {
+  margin: 0 5px;
+}
+
+.folder > div > button {
+  font-size: 15px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.deleteButton {
+  font-size: 15px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.file {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px;
+  width: 330px;
+  cursor: pointer;
+}
+
+hr.solid {
+  border-top: 3px solid #2f2d2d;
+}
+
+.form {
+  text-align: center;
+}
+
+form input[type=text] {
+  width: 350px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+form input[type=submit] {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 300px;
+}
+
+form input[type=submit]:hover {
+  opacity: 0.8;
+}
