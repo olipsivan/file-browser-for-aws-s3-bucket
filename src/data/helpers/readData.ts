@@ -1,21 +1,23 @@
+import aws from "aws-sdk";
 import { v4 as uuid } from 'uuid';
+import { FolderData } from "../../App";
 
-const readData = (data) => {
-    const root = {
+const readData = (data: aws.S3.ObjectList | undefined) => {
+    const root: FolderData = {
         id: "123",
         name: "Bucket Root",
         key: "",
         isFolder: true,
-        children: []
+        children: [],
     };
 
-    data.forEach(item => {
-        const parts = item['Key'].split('/');
-        const leafName = parts.pop();
+    data?.forEach(item => {
+        const parts = item['Key']?.split('/');
+        const leafName = parts?.pop();
         
         let currentNode = root;
 
-        parts.forEach(part => {
+        parts?.forEach(part => {
             let newCurrentNode = currentNode.children.find(child => child.name === part);
             if (newCurrentNode === undefined) {
                 const key = (root === currentNode) ? part : `${currentNode.key}/${part}`;

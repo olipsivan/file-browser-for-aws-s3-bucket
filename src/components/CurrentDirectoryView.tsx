@@ -4,7 +4,7 @@ import { FolderData } from "../App";
 import "../App.css";
 
 export interface CurrentDirectoryViewProps {
-    currentView: FolderData;
+    currentView: FolderData | null;
     setCurrentView: (id: string) => void;
     handleDelete: (id: string) => void;
 }
@@ -23,7 +23,7 @@ class CurrentDirectoryView extends React.Component<CurrentDirectoryViewProps, Cu
         
         return (
             <>
-                {currentView.children.map( child => {
+                {currentView?.children.map( child => {
                     return <FolderContent
                         child={child}
                         key={child.id}

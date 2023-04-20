@@ -4,6 +4,7 @@ import CurrentDirectoryView from "./components/CurrentDirectoryView";
 import traverseTree from "./data/helpers/traverseTree";
 import server from "./server/server";
 import readData from "./data/helpers/readData";
+import tree from "./data/tree.json";
 import "./App.css";
 
 
@@ -11,7 +12,7 @@ export interface FolderData {
   id: string,
   name: string,
   isFolder: boolean,
-  key: string,
+  key: string | undefined,
   children: FolderData[],
   lastModified?: Object,
 }
@@ -20,7 +21,7 @@ interface AppProps {};
 
 interface AppState {
   fileBrowserData: FolderData;
-  currentView: FolderData;
+  currentView: FolderData | null;
   lastFolderId: string;
   hideAccessForm: boolean;
   secretKeyId: string;
@@ -39,7 +40,7 @@ class App extends React.Component<AppProps, AppState> {
       children: [],
     },
     currentView: {} as FolderData,
-    lastFolderId: "",
+    lastFolderId: "rootId",
     hideAccessForm: false,
     secretKeyId: "",
     accessKeyId: "",
@@ -48,27 +49,23 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   handleInsertNode = async (id: string, name: string, isFolder: boolean) => {
-    const { secretKeyId, accessKeyId, bucketName, region } = this.state;
-    const { insertNode } = traverseTree(secretKeyId, accessKeyId, bucketName, region);
-    const { listObjects } = server(secretKeyId, accessKeyId, bucketName, region);
+    const { secretKeyId, accessKeyId, bucketName, region, lastFolderId } = this.state;
+    const { insertNode, findFolder } = traverseTree(secretKeyId, accessKeyId, bucketName, region);
     
-    await insertNode(this.state.fileBrowserData, id, name, isFolder);
+    const newTree = await insertNode(this.state.fileBrowserData, id, name, isFolder);
+    const currentView = findFolder(newTree, lastFolderId);
 
-    const newTree = await listObjects();
-    const { root } = readData(newTree);
-    this.setState({ fileBrowserData: root, currentView: root }); 
+    this.setState({ fileBrowserData: newTree, currentView });
   }
 
   handleDelete = async (id: string) => {
-    const { secretKeyId, accessKeyId, bucketName, region } = this.state;
-    const { deleteNode } = traverseTree(secretKeyId, accessKeyId, bucketName, region);
-    const { listObjects } = server(secretKeyId, accessKeyId, bucketName, region);
+    const { secretKeyId, accessKeyId, bucketName, region, lastFolderId } = this.state;
+    const { deleteNode, findFolder } = traverseTree(secretKeyId, accessKeyId, bucketName, region);
 
-    await deleteNode(this.state.fileBrowserData, id);
+    const newTree = await deleteNode(this.state.fileBrowserData, id, lastFolderId);
+    const currentView = findFolder(newTree, lastFolderId);
 
-    const newTree = await listObjects();
-    const { root } = readData(newTree);
-    this.setState({ fileBrowserData: root, currentView: root });
+    this.setState({ fileBrowserData: newTree, currentView });
   }
 
   setCurrentView = (id: string) => {
@@ -87,7 +84,9 @@ class App extends React.Component<AppProps, AppState> {
 
     let contents = await server(secretKeyId.value, accessKeyId.value, bucketName.value, REGION).listObjects();
     const { root } = readData(contents);
-    this.setState({ fileBrowserData: root, currentView: root, hideAccessForm: true });
+
+    const treeRoot: FolderData = tree;
+    this.setState({ fileBrowserData: treeRoot, currentView: treeRoot, hideAccessForm: true });
   }
 
   render() {

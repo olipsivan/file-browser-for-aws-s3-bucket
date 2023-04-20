@@ -1,0 +1,53 @@
+{
+    "id": "rootId",
+    "name": "Bucket Root",
+    "key": "",
+    "isFolder": true,
+    "children": [ 
+      {
+        "id": "1",
+        "name": "Folder 1",
+        "key": "",
+        "isFolder": true,
+        "children": [
+          {
+            "id": "2",
+            "name": "Folder 2",
+            "key": "",
+            "isFolder": true,
+            "children": [
+              {
+                "id": "5",
+                "name": "Folder 3",
+                "key": "",
+                "isFolder": true,
+                "children": [
+                  {
+                    "id": "6",
+                    "name": "File 3",
+                    "key": "",
+                    "isFolder": false,
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "4",
+                "name": "File 2",
+                "key": "",
+                "isFolder": false,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "name": "File 1",
+            "key": "",
+            "isFolder": false,
+            "children": []
+          }
+        ]
+      }
+    ]
+}

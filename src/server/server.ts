@@ -1,6 +1,6 @@
 import aws from "aws-sdk";
 
-const server = (secretKeyId, accessKeyId, bucketName, region) => {
+const server = (secretKeyId: string, accessKeyId: string, bucketName: string, region: string) => {
 
     const setAwsConfig = () => {
         try {
@@ -23,8 +23,8 @@ const server = (secretKeyId, accessKeyId, bucketName, region) => {
             const listParams = {  
                 Bucket: bucketName,
             }
-            const listResponse = await S3.listObjectsV2(listParams).promise();
-            let contents = listResponse.Contents;
+            const listResponse = await S3?.listObjectsV2(listParams).promise();
+            let contents = listResponse?.Contents;
             console.log("Success List:", contents);
             return contents;
         } catch (e) {
@@ -32,7 +32,7 @@ const server = (secretKeyId, accessKeyId, bucketName, region) => {
         }
     }
 
-    const createObject = async (name) => {
+    const createObject = async (name: string) => {
         try {
             const S3 = setAwsConfig();
             const uploadParams = {
@@ -40,21 +40,21 @@ const server = (secretKeyId, accessKeyId, bucketName, region) => {
                 Key: name,
                 Body: "This is " + name,
             }
-            const uploadResponse = await S3.putObject(uploadParams).promise();
+            const uploadResponse = await S3?.putObject(uploadParams).promise();
             console.log("Created: ", uploadResponse);
         } catch (e) {
             console.log("Error is: ", e)
         }
     }
 
-    const deleteObject = async (key) => {
+    const deleteObject = async (key: string) => {
         try {
             const S3 = setAwsConfig();
             const deleteParams = {
                 Bucket: bucketName,
                 Key: key,
             };
-            const deleteResponse = await S3.deleteObject(deleteParams).promise();
+            const deleteResponse = await S3?.deleteObject(deleteParams).promise();
             console.log("Deleted: ", deleteResponse);
          } catch (e) {
             console.log("Error is: ", e)
